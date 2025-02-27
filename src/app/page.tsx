@@ -1,5 +1,5 @@
 'use server';
-import Page from "./pagec.tsx"
+import Page from "./pagec"
 
 export default async function Home() {
  
