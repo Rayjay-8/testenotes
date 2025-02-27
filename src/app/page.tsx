@@ -57,6 +57,8 @@ export default function Home() {
     setContent(note.content);
   };
 
+
+
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
@@ -87,7 +89,7 @@ export default function Home() {
         </form>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {notes.map((note) => (
+          {notes?.map((note) => (
             <div key={note.id} className="border rounded p-4 space-y-2">
               <h2 className="text-xl font-semibold">{note.title}</h2>
               <p className="text-gray-600">{note.content}</p>
