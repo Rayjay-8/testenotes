@@ -34,12 +34,12 @@ export default function Home({notes}:{notes:Note[]}) {
     setTitle('');
     setContent('');
     setEditingNote(null);
-    fetchNotes();
+
   };
 
   const deleteNote = async (id: number) => {
     await fetch(`/api/notes?id=${id}`, { method: 'DELETE' });
-    fetchNotes();
+    
   };
 
   const editNote = (note: Note) => {
