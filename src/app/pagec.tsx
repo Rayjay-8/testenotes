@@ -9,7 +9,7 @@ interface Note {
   createdAt: string;
 }
 
-export default function Home({notes}:{notes:Note[]}) {
+export default function Home({notes}:{notes:any[]}) {
   
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
