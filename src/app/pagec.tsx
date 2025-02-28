@@ -1,15 +1,10 @@
 'use client';
 
+import { Note } from '@prisma/client';
 import { useState, useEffect } from 'react';
+import { criarnota, deletarnota, editarnota } from './action';
 
-interface Note {
-  id: number;
-  title: string;
-  content: string;
-  createdAt: string;
-}
-
-export default function Home({notes}:{notes:any[]}) {
+export default function Home({notes}:{notes:Note[]}) {
   
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -19,17 +14,10 @@ export default function Home({notes}:{notes:any[]}) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingNote) {
-      await fetch('/api/notes', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: editingNote.id, title, content }),
-      });
+      await editarnota({ id: editingNote.id, title, content, createdAt: new Date() })
+
     } else {
-      await fetch('/api/notes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content }),
-      });
+      await criarnota({ title, content })
     }
     setTitle('');
     setContent('');
@@ -37,9 +25,8 @@ export default function Home({notes}:{notes:any[]}) {
 
   };
 
-  const deleteNote = async (id: number) => {
-    await fetch(`/api/notes?id=${id}`, { method: 'DELETE' });
-    
+  const deleteNote = async (id: string) => {
+    await deletarnota(parseInt(id))  
   };
 
   const editNote = (note: Note) => {
@@ -83,7 +70,7 @@ export default function Home({notes}:{notes:any[]}) {
           {notes?.map((note) => (
             <div key={note.id} className="border rounded p-4 space-y-2">
               <h2 className="text-xl font-semibold">{note.title}</h2>
-              <p className="text-gray-600">{note.content}</p>
+              <span className="text-gray-600">{note.content}</span>
               <p className="text-sm text-gray-400">
                 {new Date(note.createdAt).toLocaleDateString()}
               </p>
@@ -95,7 +82,7 @@ export default function Home({notes}:{notes:any[]}) {
                   Edit
                 </button>
                 <button
-                  onClick={() => deleteNote(note.id)}
+                  onClick={() => deleteNote(String(note.id))}
                   className="text-red-500 hover:text-red-600"
                 >
                   Delete

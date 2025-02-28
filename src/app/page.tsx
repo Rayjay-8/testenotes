@@ -1,16 +1,12 @@
 'use server';
-import { PrismaClient } from '@prisma/client';
+
+import { getallnotes } from "./action";
 import Page from "./pagec"
 
-const prisma = new PrismaClient();
 
 export default async function Home() {
  
-  const data = await prisma.note.findMany({
-    orderBy: {
-      createdAt: 'desc'
-    }
-  });
+  const data = await getallnotes()
 
-  return (<Page notes={data}/>)
+  return (<Page notes={data ?? []}/>)
 }
